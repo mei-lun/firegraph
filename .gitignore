@@ -1,0 +1,28 @@
+# 构建产物
+bin/
+firegraph
+firegraph.exe
+*.exe
+
+# 运行时数据
+firegraph.db
+firegraph.db-wal
+firegraph.db-shm
+*.db
+*.db-wal
+*.db-shm
+
+# 前端第三方资源（由 scripts/fetch_assets.sh 下载）
+web/assets/vendor/speedscope/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Go
+vendor/

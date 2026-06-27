@@ -1,0 +1,10 @@
+# firegraph 后端配置示例
+# 拷贝为 firegraph.local.yaml 并按需修改，启动时 -config firegraph.local.yaml
+
+server:
+  addr: ":8080"        # HTTP 监听地址
+  web_dir: "./web"     # 前端静态资源目录
+
+store:
+  dsn: "firegraph.db"  # SQLite 数据库文件路径
+  retention_days: 7    # 数据保留天数（0 表示永久保留）

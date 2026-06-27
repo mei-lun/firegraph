@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>火焰图 — Firegraph</title>
+  <link rel="stylesheet" href="/assets/app.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <h1 class="brand"><a href="/">Firegraph</a></h1>
+      <nav class="nav">
+        <a href="/" class="nav-link">首页</a>
+        <a href="/profiles.html" class="nav-link active">火焰图</a>
+        <a href="/traces.html" class="nav-link">接口耗时</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="toolbar">
+      <div class="toolbar-group">
+        <label>service
+          <input type="text" id="filter-service" placeholder="如 login" />
+        </label>
+        <label>node
+          <input type="text" id="filter-node" placeholder="如 node1" />
+        </label>
+        <button id="btn-filter" class="btn btn-primary">查询</button>
+        <button id="btn-refresh" class="btn">刷新</button>
+      </div>
+      <div class="toolbar-hint" id="speedscope-hint" hidden>
+        未检测到 speedscope 离线包，请运行 <code>scripts/fetch_assets.sh</code> 下载。
+      </div>
+    </section>
+
+    <section class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>service</th>
+            <th>node</th>
+            <th>采样时间</th>
+            <th>时长</th>
+            <th>采样数</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody id="profile-list">
+          <tr><td colspan="7" class="empty">加载中...</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <script src="/assets/app.js"></script>
+  <script>
+    Firegraph.ProfilesPage.init();
+  </script>
+</body>
+</html>

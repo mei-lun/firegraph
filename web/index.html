@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Firegraph — Skynet 性能监测</title>
+  <link rel="stylesheet" href="/assets/app.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <h1 class="brand">Firegraph</h1>
+      <nav class="nav">
+        <a href="/" class="nav-link">首页</a>
+        <a href="/profiles.html" class="nav-link">火焰图</a>
+        <a href="/traces.html" class="nav-link">接口耗时</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h2>Skynet 游戏服务器性能 &amp; 接口耗时监测</h2>
+      <p class="hero-sub">采样式 Lua 火焰图 + dispatch 层无侵入接口埋点，浏览器交互查看。</p>
+    </section>
+
+    <section class="cards">
+      <a href="/profiles.html" class="card">
+        <div class="card-icon" aria-hidden="true">🔥</div>
+        <div class="card-title">CPU 火焰图</div>
+        <div class="card-desc">查看历史采样 profile，在 speedscope 中交互分析调用栈热点。</div>
+      </a>
+      <a href="/traces.html" class="card">
+        <div class="card-icon" aria-hidden="true">⏱️</div>
+        <div class="card-title">接口耗时</div>
+        <div class="card-desc">P50/P95/P99 分位 + 趋势图，定位慢接口与抖动。</div>
+      </a>
+      <a href="/healthz" class="card">
+        <div class="card-icon" aria-hidden="true">❤️</div>
+        <div class="card-title">健康检查</div>
+        <div class="card-desc">后端服务存活探测。</div>
+      </a>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>firegraph — <a href="https://github.com/jlfwong/speedscope" target="_blank" rel="noopener">speedscope</a> · <a href="https://github.com/lsg2020/swt" target="_blank" rel="noopener">swt</a></span>
+  </footer>
+</body>
+</html>

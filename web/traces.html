@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>接口耗时 — Firegraph</title>
+  <link rel="stylesheet" href="/assets/app.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <h1 class="brand"><a href="/">Firegraph</a></h1>
+      <nav class="nav">
+        <a href="/" class="nav-link">首页</a>
+        <a href="/profiles.html" class="nav-link">火焰图</a>
+        <a href="/traces.html" class="nav-link active">接口耗时</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="toolbar">
+      <div class="toolbar-group">
+        <label>service
+          <input type="text" id="filter-service" placeholder="如 login" />
+        </label>
+        <label>cmd
+          <input type="text" id="filter-cmd" placeholder="如 Login" />
+        </label>
+        <div class="range-group" role="group" aria-label="时间范围">
+          <button class="btn range-btn active" data-range="3600">1h</button>
+          <button class="btn range-btn" data-range="21600">6h</button>
+          <button class="btn range-btn" data-range="86400">24h</button>
+          <button class="btn range-btn" data-range="604800">7d</button>
+        </div>
+        <button id="btn-query" class="btn btn-primary">查询</button>
+      </div>
+    </section>
+
+    <section class="stats-grid" id="stats-cards">
+      <div class="stat-card"><div class="stat-label">总调用</div><div class="stat-value" id="stat-total">-</div></div>
+      <div class="stat-card"><div class="stat-label">平均耗时</div><div class="stat-value" id="stat-avg">-<span class="unit">ms</span></div></div>
+      <div class="stat-card"><div class="stat-label">P95</div><div class="stat-value" id="stat-p95">-<span class="unit">ms</span></div></div>
+      <div class="stat-card"><div class="stat-label">P99</div><div class="stat-value" id="stat-p99">-<span class="unit">ms</span></div></div>
+      <div class="stat-card"><div class="stat-label">慢调用(&gt;200ms)</div><div class="stat-value" id="stat-slow">-</div></div>
+    </section>
+
+    <section class="chart-wrap">
+      <div class="chart-title">耗时趋势（Avg / P95 / P99，单位 ms）</div>
+      <div id="chart"></div>
+      <div class="chart-legend">
+        <span class="legend-item"><span class="legend-dot" style="background:#2563eb"></span>Avg</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#dc2626"></span>P95</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#9333ea"></span>P99</span>
+      </div>
+    </section>
+
+    <section class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>service</th>
+            <th>cmd</th>
+            <th class="num">调用数</th>
+            <th class="num">P50</th>
+            <th class="num">P95</th>
+            <th class="num">P99</th>
+            <th class="num">avg</th>
+            <th class="num">max</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody id="stat-list">
+          <tr><td colspan="9" class="empty">加载中...</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="detail-section" hidden>
+      <h3 style="margin:16px 0 8px">明细：<span id="detail-title"></span></h3>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>时间</th>
+              <th>service</th>
+              <th>cmd</th>
+              <th class="num">session</th>
+              <th class="num">耗时(ms)</th>
+              <th>状态</th>
+            </tr>
+          </thead>
+          <tbody id="detail-list"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="/assets/app.js"></script>
+  <script>
+    Firegraph.TracesPage.init();
+  </script>
+</body>
+</html>
