@@ -1,0 +1,12 @@
+[2026-06-28 04:26:37] [OK] ===== monitor started (interval 8s) =====
+[2026-06-28 04:26:37] [INFO] API: http://127.0.0.1:8080
+[2026-06-28 04:26:37] [INFO] dashboard: http://127.0.0.1:8080/traces.html | http://127.0.0.1:8080/profiles.html
+[2026-06-28 04:27:05] [ERROR] backend DOWN
+[2026-06-28 04:28:12] [OK] trace +386 (424 -> 810)
+[2026-06-28 04:28:21] [OK] trace +38 (810 -> 848)
+[2026-06-28 04:28:21] [OK] profile +1 latest: id=1 samples=968
+[2026-06-28 04:29:35] [OK] trace +424 (848 -> 1272)
+[2026-06-28 04:29:35] [OK] profile +1 latest: id=1 samples=968
+[2026-06-28 04:29:48] [OK] ===== monitor started (interval 6s) =====
+[2026-06-28 04:29:48] [INFO] API: http://127.0.0.1:8080
+[2026-06-28 04:29:48] [INFO] dashboard: http://127.0.0.1:8080/traces.html | http://127.0.0.1:8080/profiles.html

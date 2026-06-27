@@ -1,0 +1,10 @@
+[2026-06-28 04:23:39] ===== firegraph daemon started =====
+[2026-06-28 04:23:39] bin: D:\MyPoj\firegraph\bin\firegraph.exe
+[2026-06-28 04:23:39] config: D:\MyPoj\firegraph\configs\firegraph.yaml
+[2026-06-28 04:23:40] [1] starting firegraph...
+[2026-06-28 04:23:40] [1] firegraph started PID=34216
+[2026-06-28 04:27:01] [1] firegraph exited ExitCode=
+[2026-06-28 04:27:01] [1] uptime: 0h 3m 20s
+[2026-06-28 04:27:01] [1] restart in 3s...
+[2026-06-28 04:27:04] [2] starting firegraph...
+[2026-06-28 04:27:04] [2] firegraph started PID=28928

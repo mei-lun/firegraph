@@ -1,0 +1,273 @@
+[:01000002] LAUNCH snlua bootstrap
+[:01000002] [firegraph] initialized: server=127.0.0.1:8080 service=demo node=wsl1
+[:01000002] [firegraph] tracer installed
+[:01000003] LAUNCH snlua launcher
+[:01000003] [firegraph] initialized: server=127.0.0.1:8080 service=demo node=wsl1
+[:01000003] [firegraph] tracer installed
+[:01000004] LAUNCH snlua cmaster
+[:01000004] [firegraph] initialized: server=127.0.0.1:8080 service=demo node=wsl1
+[:01000004] [firegraph] tracer installed
+[:01000004] master listen socket 0.0.0.0:2013
+[:01000005] LAUNCH snlua cslave
+[:01000005] [firegraph] initialized: server=127.0.0.1:8080 service=demo node=wsl1
+[:01000005] [firegraph] tracer installed
+[:01000005] slave connect to master 127.0.0.1:2013
+[:01000006] LAUNCH harbor 1 16777221
+[:01000004] connect from 127.0.0.1:50432 4
+[:01000004] Harbor 1 (fd=4) report 127.0.0.1:2526
+[:01000005] Waiting for 0 harbors
+[:01000005] Shakehand ready
+[:01000007] LAUNCH snlua datacenterd
+[:01000007] [firegraph] initialized: server=127.0.0.1:8080 service=demo node=wsl1
+[:01000007] [firegraph] tracer installed
+[:01000008] LAUNCH snlua service_mgr
+[:01000008] [firegraph] initialized: server=127.0.0.1:8080 service=demo node=wsl1
+[:01000008] [firegraph] tracer installed
+[:01000009] LAUNCH snlua mainfg
+[:01000009] [firegraph] initialized: server=127.0.0.1:8080 service=demo node=wsl1
+=== firegraph demo 启动 ===
+[:01000009] [firegraph] tracer installed
+[:01000009] [firegraph] tracer installed
+[:0100000a] LAUNCH snlua console
+[:0100000a] [firegraph] initialized: server=127.0.0.1:8080 service=demo node=wsl1
+[:0100000a] [firegraph] tracer installed
+[:0100000a] lua call [0 to :100000a : 0 msgsz = 56] error : [31m./lualib/skynet.lua:859: ./lualib/skynet.lua:330: ./lualib/skynet/socket.lua:365: assertion failed!
+stack traceback:
+	[C]: in function 'assert'
+	./lualib/skynet/socket.lua:365: in function 'skynet.socket.readline'
+	./service/console.lua:16: in upvalue 'f'
+	./lualib/skynet.lua:253: in function <./lualib/skynet.lua:252>
+stack traceback:
+	[C]: in function 'assert'
+	./lualib/skynet.lua:859: in function 'skynet.dispatch_message'[0m
+[:0100000b] LAUNCH snlua debug_console 8000
+[:0100000b] [firegraph] initialized: server=127.0.0.1:8080 service=demo node=wsl1
+[:0100000b] [firegraph] tracer installed
+[:0100000b] Start debug console at 127.0.0.1:8000
+[:0100000c] LAUNCH snlua simpledb
+[:0100000c] [firegraph] initialized: server=127.0.0.1:8080 service=demo node=wsl1
+[:0100000c] [firegraph] tracer installed
+[:0100000d] LAUNCH snlua watchdog
+[:0100000d] [firegraph] initialized: server=127.0.0.1:8080 service=demo node=wsl1
+[:0100000d] [firegraph] tracer installed
+[:0100000e] LAUNCH snlua gate
+[:0100000e] [firegraph] initialized: server=127.0.0.1:8080 service=demo node=wsl1
+[:0100000e] [firegraph] tracer installed
+[:0100000e] Listen on 0.0.0.0:8888
+=== Watchdog listen on 0.0.0.0:8888 (firegraph enabled) ===
+=== 触发 firegraph 采样 (8s) ===
+[:01000009] [firegraph] profile started: duration=8s
+[:0100000b] 127.0.0.1:65119 connected
+[:0100000b] 127.0.0.1:65119 disconnect
+=== 已触发 200 条模拟业务消息 ===
+[:01000009] [firegraph] profile reported: 439 bytes, 993s
+[:01000009] [firegraph] profile stopped: duration=8.0s
+[:0100000b] 127.0.0.1:65133 connected
+[:0100000b] 127.0.0.1:65133 disconnect
+[:0100000b] 127.0.0.1:61109 connected
+[:0100000b] 127.0.0.1:61109 disconnect
+[:0100000b] 127.0.0.1:61116 connected
+[:0100000b] 127.0.0.1:61116 disconnect
+[:0100000b] 127.0.0.1:51015 connected
+[:0100000b] 127.0.0.1:51015 disconnect
+[:0100000b] 127.0.0.1:51021 connected
+[:0100000b] 127.0.0.1:51021 disconnect
+[:0100000b] 127.0.0.1:57224 connected
+[:0100000b] 127.0.0.1:57224 disconnect
+[:0100000b] 127.0.0.1:57230 connected
+[:0100000b] 127.0.0.1:57230 disconnect
+[:0100000b] 127.0.0.1:57755 connected
+[:0100000b] 127.0.0.1:57755 disconnect
+[:0100000b] 127.0.0.1:57767 connected
+[:0100000b] 127.0.0.1:57767 disconnect
+[:0100000b] 127.0.0.1:57773 connected
+[:0100000b] 127.0.0.1:57773 disconnect
+[:0100000b] 127.0.0.1:57209 connected
+[:0100000b] 127.0.0.1:57209 disconnect
+[:01000002] LAUNCH snlua bootstrap
+[:01000002] [firegraph] initialized: server=127.0.0.1:8080 service=demo node=wsl1
+[:01000002] [firegraph] tracer installed
+[:01000003] LAUNCH snlua launcher
+[:01000003] [firegraph] initialized: server=127.0.0.1:8080 service=demo node=wsl1
+[:01000003] [firegraph] tracer installed
+[:01000004] LAUNCH snlua cmaster
+[:01000004] [firegraph] initialized: server=127.0.0.1:8080 service=demo node=wsl1
+[:01000004] [firegraph] tracer installed
+[:01000004] master listen socket 0.0.0.0:2013
+[:01000005] LAUNCH snlua cslave
+[:01000005] [firegraph] initialized: server=127.0.0.1:8080 service=demo node=wsl1
+[:01000005] [firegraph] tracer installed
+[:01000005] slave connect to master 127.0.0.1:2013
+[:01000004] connect from 127.0.0.1:49998 4
+[:01000006] LAUNCH harbor 1 16777221
+[:01000004] Harbor 1 (fd=4) report 127.0.0.1:2526
+[:01000005] Waiting for 0 harbors
+[:01000005] Shakehand ready
+[:01000007] LAUNCH snlua datacenterd
+[:01000007] [firegraph] initialized: server=127.0.0.1:8080 service=demo node=wsl1
+[:01000007] [firegraph] tracer installed
+[:01000008] LAUNCH snlua service_mgr
+[:01000008] [firegraph] initialized: server=127.0.0.1:8080 service=demo node=wsl1
+[:01000008] [firegraph] tracer installed
+[:01000009] LAUNCH snlua mainfg
+[:01000009] [firegraph] initialized: server=127.0.0.1:8080 service=demo node=wsl1
+[:01000009] [firegraph] tracer installed
+=== firegraph demo 启动 ===
+[:01000009] [firegraph] tracer installed
+[:0100000a] LAUNCH snlua console
+[:0100000a] [firegraph] initialized: server=127.0.0.1:8080 service=demo node=wsl1
+[:0100000a] [firegraph] tracer installed
+[:0100000a] lua call [0 to :100000a : 0 msgsz = 56] error : [31m./lualib/skynet.lua:859: ./lualib/skynet.lua:330: ./lualib/skynet/socket.lua:365: assertion failed!
+stack traceback:
+	[C]: in function 'assert'
+	./lualib/skynet/socket.lua:365: in function 'skynet.socket.readline'
+	./service/console.lua:16: in upvalue 'f'
+	./lualib/skynet.lua:253: in function <./lualib/skynet.lua:252>
+stack traceback:
+	[C]: in function 'assert'
+	./lualib/skynet.lua:859: in function 'skynet.dispatch_message'[0m
+[:0100000b] LAUNCH snlua debug_console 8000
+[:0100000b] [firegraph] initialized: server=127.0.0.1:8080 service=demo node=wsl1
+[:0100000b] [firegraph] tracer installed
+[:0100000b] Start debug console at 127.0.0.1:8000
+[:0100000c] LAUNCH snlua simpledb
+[:0100000c] [firegraph] initialized: server=127.0.0.1:8080 service=demo node=wsl1
+[:0100000c] [firegraph] tracer installed
+[:0100000d] LAUNCH snlua watchdog
+[:0100000d] [firegraph] initialized: server=127.0.0.1:8080 service=demo node=wsl1
+[:0100000d] [firegraph] tracer installed
+[:0100000e] LAUNCH snlua gate
+[:0100000e] [firegraph] initialized: server=127.0.0.1:8080 service=demo node=wsl1
+[:0100000e] [firegraph] tracer installed
+[:0100000e] Listen on 0.0.0.0:8888
+=== Watchdog listen on 0.0.0.0:8888 (firegraph enabled) ===
+=== 触发 firegraph 采样 (8s) ===
+[:01000009] [firegraph] profile started: duration=8s
+[:0100000b] 127.0.0.1:50370 connected
+[:0100000b] 127.0.0.1:50370 disconnect
+=== 已触发 200 条模拟业务消息 ===
+[:01000009] [firegraph] profile reported: 438 bytes, 445s
+[:01000009] [firegraph] profile stopped: duration=8.0s
+[:0100000b] 127.0.0.1:50381 connected
+[:0100000b] 127.0.0.1:50381 disconnect
+[:0100000b] 127.0.0.1:52023 connected
+[:0100000b] 127.0.0.1:52023 disconnect
+[:0100000b] 127.0.0.1:52037 connected
+[:0100000b] 127.0.0.1:52037 disconnect
+[:0100000b] 127.0.0.1:52345 connected
+[:0100000b] 127.0.0.1:52345 disconnect
+[:0100000b] 127.0.0.1:53627 connected
+[:0100000b] 127.0.0.1:53627 disconnect
+[:0100000b] 127.0.0.1:65243 connected
+[:0100000b] 127.0.0.1:65243 disconnect
+[:0100000b] 127.0.0.1:65366 connected
+[:0100000b] 127.0.0.1:65366 disconnect
+[:0100000b] 127.0.0.1:55911 connected
+[:0100000b] 127.0.0.1:55911 disconnect
+[:0100000b] 127.0.0.1:54410 connected
+[:0100000b] 127.0.0.1:54410 disconnect
+[:0100000b] 127.0.0.1:60809 connected
+[:0100000b] 127.0.0.1:60809 disconnect
+[:0100000b] 127.0.0.1:60823 connected
+[:0100000b] 127.0.0.1:60823 disconnect
+[:0100000b] 127.0.0.1:50367 connected
+[:0100000b] 127.0.0.1:50367 disconnect
+[:0100000b] 127.0.0.1:55928 connected
+[:0100000b] 127.0.0.1:55928 disconnect
+[:0100000b] 127.0.0.1:58463 connected
+[:0100000b] 127.0.0.1:58463 disconnect
+[:0100000b] 127.0.0.1:59273 connected
+[:0100000b] 127.0.0.1:59273 disconnect
+[:0100000b] 127.0.0.1:50675 connected
+[:0100000b] 127.0.0.1:50675 disconnect
+[:0100000b] 127.0.0.1:60267 connected
+[:0100000b] 127.0.0.1:60267 disconnect
+[:0100000b] 127.0.0.1:55796 connected
+[:0100000b] 127.0.0.1:55796 disconnect
+[:0100000b] 127.0.0.1:49411 connected
+[:0100000b] 127.0.0.1:49411 disconnect
+[:0100000b] 127.0.0.1:60953 connected
+[:0100000b] 127.0.0.1:60953 disconnect
+[:0100000b] 127.0.0.1:55110 connected
+[:0100000b] 127.0.0.1:55110 disconnect
+[:0100000b] 127.0.0.1:61359 connected
+[:0100000b] 127.0.0.1:61359 disconnect
+[:0100000b] 127.0.0.1:63437 connected
+[:0100000b] 127.0.0.1:63437 disconnect
+[:0100000b] 127.0.0.1:60640 connected
+[:0100000b] 127.0.0.1:60640 disconnect
+[:0100000b] 127.0.0.1:56343 connected
+[:0100000b] 127.0.0.1:56343 disconnect
+[:0100000b] 127.0.0.1:54279 connected
+[:0100000b] 127.0.0.1:54279 disconnect
+[:0100000b] 127.0.0.1:61238 connected
+[:0100000b] 127.0.0.1:61238 disconnect
+[:0100000b] 127.0.0.1:55223 connected
+[:0100000b] 127.0.0.1:55223 disconnect
+[:0100000b] 127.0.0.1:63979 connected
+[:0100000b] 127.0.0.1:63979 disconnect
+[:0100000b] 127.0.0.1:53326 connected
+[:0100000b] 127.0.0.1:53326 disconnect
+[:0100000b] 127.0.0.1:57139 connected
+[:0100000b] 127.0.0.1:57139 disconnect
+[:0100000b] 127.0.0.1:62401 connected
+[:0100000b] 127.0.0.1:62401 disconnect
+[:0100000b] 127.0.0.1:63219 connected
+[:0100000b] 127.0.0.1:63219 disconnect
+[:0100000b] 127.0.0.1:51303 connected
+[:0100000b] 127.0.0.1:51303 disconnect
+[:0100000b] 127.0.0.1:56780 connected
+[:0100000b] 127.0.0.1:56780 disconnect
+[:0100000b] 127.0.0.1:58608 connected
+[:0100000b] 127.0.0.1:58608 disconnect
+[:0100000b] 127.0.0.1:58599 connected
+[:0100000b] 127.0.0.1:58599 disconnect
+[:0100000b] 127.0.0.1:58906 connected
+[:0100000b] 127.0.0.1:58906 disconnect
+[:0100000b] 127.0.0.1:54961 connected
+[:0100000b] 127.0.0.1:54961 disconnect
+[:0100000b] 127.0.0.1:51094 connected
+[:0100000b] 127.0.0.1:51094 disconnect
+[:0100000b] 127.0.0.1:52160 connected
+[:0100000b] 127.0.0.1:52160 disconnect
+[:0100000b] 127.0.0.1:58414 connected
+[:0100000b] 127.0.0.1:58414 disconnect
+[:0100000b] 127.0.0.1:50383 connected
+[:0100000b] 127.0.0.1:50383 disconnect
+[:0100000b] 127.0.0.1:51139 connected
+[:0100000b] 127.0.0.1:51139 disconnect
+[:0100000b] 127.0.0.1:63585 connected
+[:0100000b] 127.0.0.1:63585 disconnect
+[:0100000b] 127.0.0.1:62782 connected
+[:0100000b] 127.0.0.1:62782 disconnect
+[:0100000b] 127.0.0.1:58557 connected
+[:0100000b] 127.0.0.1:58557 disconnect
+[:0100000b] 127.0.0.1:50368 connected
+[:0100000b] 127.0.0.1:50368 disconnect
+[:0100000b] 127.0.0.1:56417 connected
+[:0100000b] 127.0.0.1:56417 disconnect
+[:0100000b] 127.0.0.1:56424 connected
+[:0100000b] 127.0.0.1:56424 disconnect
+[:0100000b] 127.0.0.1:56700 connected
+[:0100000b] 127.0.0.1:56700 disconnect
+[:0100000b] 127.0.0.1:56708 connected
+[:0100000b] 127.0.0.1:56708 disconnect
+[:0100000b] 127.0.0.1:54284 connected
+[:0100000b] 127.0.0.1:54284 disconnect
+[:0100000b] 127.0.0.1:54663 connected
+[:0100000b] 127.0.0.1:54663 disconnect
+[:0100000b] 127.0.0.1:58991 connected
+[:0100000b] 127.0.0.1:58991 disconnect
+[:0100000b] 127.0.0.1:58589 connected
+[:0100000b] 127.0.0.1:58589 disconnect
+[:0100000b] 127.0.0.1:60379 connected
+[:0100000b] 127.0.0.1:60379 disconnect
+[:0100000b] 127.0.0.1:58585 connected
+[:0100000b] 127.0.0.1:58585 disconnect
+[:0100000b] 127.0.0.1:59951 connected
+[:0100000b] 127.0.0.1:59951 disconnect
+[:0100000b] 127.0.0.1:55947 connected
+[:0100000b] 127.0.0.1:55947 disconnect
+[:0100000b] 127.0.0.1:56565 connected
+[:0100000b] 127.0.0.1:56565 disconnect
+[:0100000b] 127.0.0.1:59614 connected

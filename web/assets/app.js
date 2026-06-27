@@ -105,11 +105,14 @@
       }).join('');
     },
 
-    viewFlame: function (id, service) {
-      var url = '/api/profiles/' + id + '/speedscope.json';
+    viewFlame: async function (id, service) {
+      var profileUrl = window.location.origin + '/api/profiles/' + id + '/speedscope.json';
       var title = service + ' #' + id;
-      var ssUrl = '/assets/vendor/speedscope/index.html#profileURL=' +
-        encodeURIComponent(url) + '&title=' + encodeURIComponent(title);
+      var localAvailable = await checkSpeedscope();
+      var base = localAvailable
+        ? '/assets/vendor/speedscope/index.html'
+        : 'https://www.speedscope.app/';
+      var ssUrl = base + '#profileURL=' + encodeURIComponent(profileUrl) + '&title=' + encodeURIComponent(title);
       window.open(ssUrl, '_blank');
     }
   };

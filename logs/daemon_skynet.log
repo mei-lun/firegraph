@@ -1,0 +1,11 @@
+[2026-06-28 04:28:03] ===== skynet daemon started =====
+[2026-06-28 04:28:03] root: /mnt/d/MyPoj/myskynet
+[2026-06-28 04:28:03] config: examples/config.firegraph
+[2026-06-28 04:28:03] app log: /mnt/d/MyPoj/firegraph/logs/skynet.log
+[2026-06-28 04:28:03] [1] 启动 skynet...
+[2026-06-28 04:28:03] [1] skynet 已启动 PID=5964，日志 -> /mnt/d/MyPoj/firegraph/logs/skynet.log
+[2026-06-28 04:29:20] [1] skynet 进程已退出
+[2026-06-28 04:29:20] [1] 本次运行时长: 77s
+[2026-06-28 04:29:20] [1] 3 秒后自动重启...
+[2026-06-28 04:29:23] [2] 启动 skynet...
+[2026-06-28 04:29:23] [2] skynet 已启动 PID=6235，日志 -> /mnt/d/MyPoj/firegraph/logs/skynet.log
