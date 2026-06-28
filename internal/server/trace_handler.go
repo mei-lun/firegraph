@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/firegraph/firegraph/internal/metrics"
 	"github.com/firegraph/firegraph/internal/store"
 )
 
@@ -39,6 +40,10 @@ func (s *Server) handleTraceBatch(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		writeError(w, http.StatusInternalServerError, "insert: "+err.Error())
 		return
+	}
+	// Prometheus 指标埋点
+	for _, t := range traces {
+		metrics.RecordTrace(t.Cmd, t.Service, t.CostMs, t.Ok)
 	}
 	writeJSON(w, http.StatusOK, map[string]interface{}{
 		"inserted":  n,

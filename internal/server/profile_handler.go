@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/firegraph/firegraph/internal/metrics"
 	"github.com/firegraph/firegraph/internal/profile"
 	"github.com/firegraph/firegraph/internal/store"
 )
@@ -65,6 +66,8 @@ func (s *Server) handleProfileUpload(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusInternalServerError, "insert: "+err.Error())
 		return
 	}
+	// Prometheus 指标埋点
+	metrics.RecordProfile(req.ServiceName, sampleCount)
 	writeJSON(w, http.StatusOK, map[string]interface{}{
 		"id":           id,
 		"sample_count": sampleCount,

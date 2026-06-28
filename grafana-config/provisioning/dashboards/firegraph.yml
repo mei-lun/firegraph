@@ -1,0 +1,15 @@
+# Grafana 仪表盘 provider 自动配置
+# 从指定目录自动加载 JSON 仪表盘
+apiVersion: 1
+
+providers:
+  - name: firegraph
+    orgId: 1
+    folder: firegraph
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 10
+    allowUiUpdates: true
+    options:
+      path: D:\MyPoj\grafana\grafana-13.1.0\conf\provisioning\dashboards\json
+      foldersFromFilesStructure: false

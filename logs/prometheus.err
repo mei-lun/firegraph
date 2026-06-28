@@ -1,0 +1,21 @@
+time=2026-06-28T04:49:14.403+08:00 level=INFO source=main.go:1724 msg="updated GOGC" old=100 new=75
+time=2026-06-28T04:49:14.411+08:00 level=INFO source=main.go:789 msg="Leaving GOMAXPROCS=16: CPU quota undefined" component=automaxprocs
+time=2026-06-28T04:49:14.413+08:00 level=INFO source=memlimit.go:198 msg="GOMEMLIMIT is updated" component=automemlimit package=github.com/KimMachineGun/automemlimit/memlimit GOMEMLIMIT=30746953728 previous=9223372036854775807
+time=2026-06-28T04:49:14.415+08:00 level=INFO source=main.go:896 msg="Starting Prometheus Server" mode=server version="(version=3.13.0-rc.1, branch=HEAD, revision=bd96185f372a3fd8badb27697cc6409fda1af2a6)"
+time=2026-06-28T04:49:14.417+08:00 level=INFO source=main.go:901 msg="operational information" build_context="(go=go1.26.4, platform=windows/amd64, user=root@0fca565ca543, date=20260622-14:55:18, tags=builtinassets)" host_details=(windows) fd_limits=N/A vm_limits=N/A
+time=2026-06-28T04:49:14.512+08:00 level=INFO source=web.go:727 msg="Start listening for connections" component=web address=:9090
+time=2026-06-28T04:49:14.515+08:00 level=INFO source=main.go:1456 msg="Starting TSDB ..."
+time=2026-06-28T04:49:14.515+08:00 level=INFO source=tls_config.go:354 msg="Listening on" component=web address=[::]:9090
+time=2026-06-28T04:49:14.515+08:00 level=INFO source=tls_config.go:357 msg="TLS is disabled." component=web http2=false address=[::]:9090
+time=2026-06-28T04:49:14.517+08:00 level=INFO source=head.go:709 msg="Replaying on-disk memory mappable chunks if any" component=tsdb
+time=2026-06-28T04:49:14.517+08:00 level=INFO source=head.go:795 msg="On-disk memory mappable chunks replay completed" component=tsdb duration=0s
+time=2026-06-28T04:49:14.517+08:00 level=INFO source=head.go:803 msg="Replaying WAL, this may take a while" component=tsdb
+time=2026-06-28T04:49:14.518+08:00 level=INFO source=head.go:898 msg="WAL segment loaded" component=tsdb segment=0 maxSegment=0 duration=0s
+time=2026-06-28T04:49:14.518+08:00 level=INFO source=head.go:935 msg="WAL replay completed" component=tsdb checkpoint_replay_duration=0s wal_replay_duration=0s wbl_replay_duration=0s chunk_snapshot_load_duration=0s mmap_chunk_replay_duration=0s total_replay_duration=1.0394ms
+time=2026-06-28T04:49:14.520+08:00 level=INFO source=main.go:1477 msg="filesystem information" fs_type=unknown
+time=2026-06-28T04:49:14.520+08:00 level=INFO source=main.go:1480 msg="TSDB started"
+time=2026-06-28T04:49:14.520+08:00 level=INFO source=main.go:1678 msg="Loading configuration file" filename=d:\MyPoj\firegraph\configs\prometheus.yml
+time=2026-06-28T04:49:14.520+08:00 level=INFO source=main.go:1094 msg="TSDB retention updated" duration=15d size=0B percentage=0
+time=2026-06-28T04:49:15.802+08:00 level=INFO source=main.go:1717 msg="Completed loading of configuration file" db_storage=0s remote_storage=0s web_handler=0s query_engine=0s scrape=1.2825871s scrape_sd=0s notify=0s notify_sd=0s rules=0s tracing=0s filename=d:\MyPoj\firegraph\configs\prometheus.yml totalDuration=1.2825871s
+time=2026-06-28T04:49:15.802+08:00 level=INFO source=main.go:1441 msg="Server is ready to receive web requests."
+time=2026-06-28T04:49:15.802+08:00 level=INFO source=manager.go:211 msg="Starting rule manager..." component="rule manager"

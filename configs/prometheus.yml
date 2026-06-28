@@ -1,0 +1,37 @@
+# Prometheus 抓取配置示例
+# 启动: prometheus --config.file=configs/prometheus.yml
+# 验证: 访问 http://localhost:9090/targets ，firegraph job 状态应为 UP
+
+global:
+  scrape_interval: 15s      # 抓取间隔（生产可调到 15~30s）
+  evaluation_interval: 15s  # 规则评估间隔
+
+scrape_configs:
+  - job_name: "firegraph"
+    metrics_path: "/metrics"
+    static_configs:
+      - targets: ["localhost:8080"]   # firegraph 后端地址
+        labels:
+          service: "firegraph"
+
+# 常用 PromQL 查询示例（在 Prometheus UI http://localhost:9090/graph 执行）：
+#
+# 1. 各 cmd 的 QPS（每秒请求数）:
+#    sum(rate(firegraph_trace_count_total[1m])) by (cmd)
+#
+# 2. 各 cmd 的 P95 延迟（毫秒）:
+#    histogram_quantile(0.95, sum(rate(firegraph_trace_latency_ms_bucket[5m])) by (cmd, le))
+#
+# 3. 各 cmd 的 P99 延迟（毫秒）:
+#    histogram_quantile(0.99, sum(rate(firegraph_trace_latency_ms_bucket[5m])) by (cmd, le))
+#
+# 4. 失败请求占比:
+#    sum(rate(firegraph_trace_count_total{ok="false"}[5m])) by (cmd)
+#    /
+#    sum(rate(firegraph_trace_count_total[5m])) by (cmd)
+#
+# 5. 各 service 的 profile 上报速率（每分钟）:
+#    sum(rate(firegraph_profile_count_total[1m])) by (service) * 60
+#
+# 6. 平均单 profile 采样点数:
+#    rate(firegraph_profile_samples_sum[5m]) / rate(firegraph_profile_samples_count[5m])
