@@ -152,6 +152,16 @@ local PROFILES_HTML = [===[
       </div>
     </section>
 
+    <section class="axis-wrap">
+      <div class="axis-header">
+        <span class="axis-title">采样时间轴（每个点 = 一个采样分组）</span>
+        <label class="axis-window">窗口 <input type="number" id="group-window" value="10" min="1" step="1" /> 秒</label>
+        <label class="axis-window">最多 <input type="number" id="group-max" value="50" min="1" step="1" /> 组</label>
+        <span class="axis-hint" id="group-filter-hint" hidden>已筛选 1 个分组 — <a href="javascript:void(0)" onclick="Firegraph.ProfilesPage.clearGroup()">清除</a></span>
+      </div>
+      <div id="profile-axis" class="axis-body"><div class="empty">加载中...</div></div>
+    </section>
+
     <section class="table-wrap">
       <table class="data-table">
         <thead>
@@ -229,6 +239,8 @@ local APP_JS = [===[
   }
 
   // ---------- Profiles 列表页 ----------
+  var profileState = { window: 10, maxGroups: 50, selected: null, items: [], groups: [] };
+
   Firegraph.ProfilesPage = {
     init: async function () {
       var hint = qs('speedscope-hint');
@@ -242,6 +254,18 @@ local APP_JS = [===[
       }.bind(this));
       qs('filter-node').addEventListener('keydown', function (e) {
         if (e.key === 'Enter') this.load.bind(this)();
+      }.bind(this));
+      qs('group-window').addEventListener('change', function () {
+        var w = parseInt(qs('group-window').value, 10);
+        profileState.window = (w && w > 0) ? w : 10;
+        profileState.selected = null;
+        this.load();
+      }.bind(this));
+      qs('group-max').addEventListener('change', function () {
+        var m = parseInt(qs('group-max').value, 10);
+        profileState.maxGroups = (m && m > 0) ? m : 50;
+        profileState.selected = null;
+        this.load();
       }.bind(this));
       await this.load();
 
@@ -272,16 +296,24 @@ local APP_JS = [===[
       tbody.innerHTML = '<tr><td colspan="7" class="empty">加载中...</td></tr>';
       try {
         var data = await fetchJSON('/api/profiles' + this.buildQuery());
-        this.render(data.items || []);
+        profileState.items = data.items || [];
+        this.render();
+        await this.loadGroups();
       } catch (e) {
         tbody.innerHTML = '<tr><td colspan="7" class="empty">加载失败: ' + escapeHtml(e.message) + '</td></tr>';
       }
     },
 
-    render: function (items) {
+    render: function () {
       var tbody = qs('profile-list');
+      var items = profileState.items || [];
+      if (profileState.selected != null) {
+        items = items.filter(function (p) {
+          return Math.floor(p.sampled_at / profileState.window) * profileState.window === profileState.selected;
+        });
+      }
       if (!items.length) {
-        tbody.innerHTML = '<tr><td colspan="7" class="empty">暂无 profile 数据</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="7" class="empty">' + (profileState.selected != null ? '该分组暂无 profile' : '暂无 profile 数据') + '</td></tr>';
         return;
       }
       tbody.innerHTML = items.map(function (p) {
@@ -304,6 +336,44 @@ local APP_JS = [===[
     viewFlame: async function (id, service) {
       var url = '/firegraph/view?pid=' + id + '&service=' + encodeURIComponent(service);
       window.open(url, '_blank');
+    },
+
+    loadGroups: async function () {
+      var el = qs('profile-axis');
+      try {
+        var parts = ['window=' + profileState.window, 'limit=' + profileState.maxGroups];
+        var s = qs('filter-service').value.trim();
+        var n = qs('filter-node').value.trim();
+        if (s) parts.push('service=' + encodeURIComponent(s));
+        if (n) parts.push('node=' + encodeURIComponent(n));
+        var data = await fetchJSON('/api/profiles/groups?' + parts.join('&'));
+        profileState.groups = data.items || [];
+        this.renderAxis();
+      } catch (e) {
+        el.innerHTML = '<div class="empty">分组轴加载失败</div>';
+      }
+    },
+
+    renderAxis: function () {
+      var el = qs('profile-axis');
+      el.innerHTML = renderGroupAxis(profileState.groups || [], {
+        onSelect: 'Firegraph.ProfilesPage.selectGroup',
+        selectedTs: profileState.selected
+      });
+      var h = qs('group-filter-hint');
+      if (h) h.hidden = !profileState.selected;
+    },
+
+    selectGroup: function (ts) {
+      profileState.selected = (profileState.selected === ts) ? null : ts;
+      this.render();
+      this.renderAxis();
+    },
+
+    clearGroup: function () {
+      profileState.selected = null;
+      this.render();
+      this.renderAxis();
     }
   };
 
@@ -314,7 +384,7 @@ local APP_JS = [===[
     86400: { bucket: 1800, label: '24h' },
     604800: { bucket: 7200, label: '7d' }
   };
-  var traceState = { rangeSec: 3600 };
+  var traceState = { rangeSec: 3600, window: 10, maxGroups: 50, selectedGroup: null, groups: [] };
 
   Firegraph.TracesPage = {
     init: function () {
@@ -326,12 +396,25 @@ local APP_JS = [===[
       qs('filter-cmd').addEventListener('keydown', function (e) {
         if (e.key === 'Enter') self.load();
       });
+      qs('group-window').addEventListener('change', function () {
+        var w = parseInt(qs('group-window').value, 10);
+        traceState.window = (w && w > 0) ? w : 10;
+        traceState.selectedGroup = null;
+        self.load();
+      });
+      qs('group-max').addEventListener('change', function () {
+        var m = parseInt(qs('group-max').value, 10);
+        traceState.maxGroups = (m && m > 0) ? m : 50;
+        traceState.selectedGroup = null;
+        self.load();
+      });
       var btns = document.querySelectorAll('.range-btn');
       for (var i = 0; i < btns.length; i++) {
         btns[i].addEventListener('click', function () {
           for (var j = 0; j < btns.length; j++) btns[j].classList.remove('active');
           this.classList.add('active');
           traceState.rangeSec = parseInt(this.getAttribute('data-range'), 10);
+          traceState.selectedGroup = null;
           self.load();
         });
       }
@@ -339,9 +422,16 @@ local APP_JS = [===[
     },
 
     buildQuery: function (extra) {
-      var now = Math.floor(Date.now() / 1000);
-      var from = now - traceState.rangeSec;
-      var parts = ['from=' + from, 'to=' + now];
+      var from, to;
+      if (traceState.selectedGroup != null) {
+        from = traceState.selectedGroup;
+        to = from + traceState.window - 1;
+      } else {
+        var now = Math.floor(Date.now() / 1000);
+        from = now - traceState.rangeSec;
+        to = now;
+      }
+      var parts = ['from=' + from, 'to=' + to];
       var s = qs('filter-service').value.trim();
       var c = qs('filter-cmd').value.trim();
       if (s) parts.push('service=' + encodeURIComponent(s));
@@ -352,6 +442,7 @@ local APP_JS = [===[
 
     load: async function () {
       var self = this;
+      this.loadGroups();
       ['stat-total', 'stat-avg', 'stat-p95', 'stat-p99', 'stat-slow'].forEach(function (id) {
         qs(id).innerHTML = '-';
       });
@@ -444,6 +535,46 @@ local APP_JS = [===[
       } catch (e) {
         list.innerHTML = '<tr><td colspan="6" class="empty">无明细数据</td></tr>';
       }
+    },
+
+    loadGroups: async function () {
+      var el = qs('trace-axis');
+      try {
+        var now = Math.floor(Date.now() / 1000);
+        var from = now - traceState.rangeSec;
+        var parts = ['window=' + traceState.window, 'limit=' + traceState.maxGroups, 'from=' + from, 'to=' + now];
+        var s = qs('filter-service').value.trim();
+        var c = qs('filter-cmd').value.trim();
+        if (s) parts.push('service=' + encodeURIComponent(s));
+        if (c) parts.push('cmd=' + encodeURIComponent(c));
+        var data = await fetchJSON('/api/traces/groups?' + parts.join('&'));
+        traceState.groups = data.items || [];
+        this.renderAxis();
+      } catch (e) {
+        el.innerHTML = '<div class="empty">分组轴加载失败</div>';
+      }
+    },
+
+    renderAxis: function () {
+      var el = qs('trace-axis');
+      el.innerHTML = renderGroupAxis(traceState.groups || [], {
+        onSelect: 'Firegraph.TracesPage.selectGroup',
+        selectedTs: traceState.selectedGroup
+      });
+      var h = qs('trace-group-hint');
+      if (h) h.hidden = !traceState.selectedGroup;
+    },
+
+    selectGroup: function (ts) {
+      traceState.selectedGroup = (traceState.selectedGroup === ts) ? null : ts;
+      this.renderAxis();
+      this.load();
+    },
+
+    clearGroup: function () {
+      traceState.selectedGroup = null;
+      this.renderAxis();
+      this.load();
     }
   };
 
@@ -503,6 +634,39 @@ local APP_JS = [===[
     var d = new Date(unixSec * 1000);
     function pad(n) { return n < 10 ? '0' + n : '' + n; }
     return pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+  }
+
+  // ---------- 时间分组轴组件（火焰图 / 接口耗时共用）----------
+  // groups: [{ts, count}] 升序；opts: {onSelect 函数名, selectedTs}
+  function renderGroupAxis(groups, opts) {
+    var W = 1100, H = 76, PAD_L = 14, PAD_R = 14, PAD_T = 12, PAD_B = 24;
+    var plotW = W - PAD_L - PAD_R;
+    var n = groups.length;
+    if (!n) return '<div class="empty">暂无分组数据</div>';
+    var maxC = 1;
+    for (var i = 0; i < n; i++) { if (groups[i].count > maxC) maxC = groups[i].count; }
+    var xStep = n > 1 ? plotW / (n - 1) : 0;
+    function xPos(i) { return PAD_L + (n > 1 ? i * xStep : plotW / 2); }
+    var cy = PAD_T + 16;
+    var html = '';
+    for (var i = 0; i < n; i++) {
+      var x = xPos(i);
+      var r = 5 + Math.round((groups[i].count / maxC) * 9);
+      var sel = opts.selectedTs === groups[i].ts;
+      html += '<g style="cursor:pointer" onclick="' + opts.onSelect + '(' + groups[i].ts + ')">' +
+        '<circle cx="' + x + '" cy="' + cy + '" r="' + Math.max(r + 6, 14) + '" fill="transparent"/>' +
+        '<circle cx="' + x + '" cy="' + cy + '" r="' + r + '" fill="' + (sel ? '#dc2626' : '#2563eb') + '"' + (sel ? ' stroke="#991b1b" stroke-width="2"' : '') + '/>' +
+        '</g>';
+    }
+    html += '<line x1="' + PAD_L + '" y1="' + cy + '" x2="' + (PAD_L + plotW) + '" y2="' + cy + '" stroke="#dbeafe" stroke-width="1"/>';
+    var tick = 5;
+    for (var k = 0; k < tick; k++) {
+      var idx = Math.round((n - 1) * k / Math.max(tick - 1, 1));
+      if (idx < 0) idx = 0;
+      if (idx >= n) idx = n - 1;
+      html += '<text x="' + xPos(idx) + '" y="' + (H - 8) + '" font-size="10" fill="#94a3b8" text-anchor="middle">' + formatShortTime(groups[idx].ts) + '</text>';
+    }
+    return '<svg viewBox="0 0 ' + W + ' ' + H + '" width="100%" role="img" aria-label="时间分组轴">' + html + '</svg>';
   }
 
   global.Firegraph = Firegraph;
@@ -602,6 +766,16 @@ local TRACES_HTML = [===[
         </div>
         <button id="btn-query" class="btn btn-primary">查询</button>
       </div>
+    </section>
+
+    <section class="axis-wrap">
+      <div class="axis-header">
+        <span class="axis-title">调用分组轴（每个点 = 一个时间窗内的全部调用）</span>
+        <label class="axis-window">窗口 <input type="number" id="group-window" value="10" min="1" step="1" /> 秒</label>
+        <label class="axis-window">最多 <input type="number" id="group-max" value="50" min="1" step="1" /> 组</label>
+        <span class="axis-hint" id="trace-group-hint" hidden>已筛选 1 个分组 — <a href="javascript:void(0)" onclick="Firegraph.TracesPage.clearGroup()">清除</a></span>
+      </div>
+      <div id="trace-axis" class="axis-body"><div class="empty">加载中...</div></div>
     </section>
 
     <section class="stats-grid" id="stats-cards">
@@ -924,6 +1098,42 @@ a:hover { text-decoration: underline; }
 .data-table .crit { color: #dc2626; font-weight: 600; }
 .data-table .ok { color: #16a34a; }
 .data-table .fail { color: #dc2626; }
+
+/* time group axis */
+.axis-wrap {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  padding: 12px 16px;
+}
+.axis-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+.axis-title {
+  font-weight: 600;
+  color: #374151;
+}
+.axis-window {
+  font-size: 13px;
+  color: #6b7280;
+}
+.axis-window input {
+  width: 56px;
+  padding: 4px 6px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 13px;
+}
+.axis-hint {
+  font-size: 13px;
+  color: #dc2626;
+}
+.axis-hint a { margin-left: 4px; }
+.axis-body { min-height: 76px; }
 ]===]
 
 -- ===== Speedscope 静态文件路径 =====
@@ -1048,6 +1258,47 @@ local function handle_profile_list(request)
         end
     end
 
+    http_helper.response(request.id, 200, {items = json_array(items)})
+end
+
+-- ===== API: Profile 时间分组（供时间轴使用）=====
+local function handle_profile_groups(request)
+    local query = request.query or {}
+    local window = tonumber(query["window"]) or 10
+    if not window or window < 1 then window = 1 end
+    local limit = tonumber(query["limit"]) or 50
+    if not limit or limit < 1 then limit = 50 end
+    local filter_service = query["service"]
+    local filter_node = query["node"]
+
+    local buckets = {}
+    for i = 1, max_cache do
+        local idx = ((cache_index - i) % max_cache) + 1
+        local p = cache[idx]
+        if p then
+            if (not filter_service or filter_service == "" or p.service == filter_service)
+                and (not filter_node or filter_node == "" or p.node == filter_node) then
+                local b = math.floor(p.time / window) * window
+                local g = buckets[b]
+                if not g then
+                    g = {ts = b, count = 0}
+                    buckets[b] = g
+                end
+                g.count = g.count + 1
+            end
+        end
+    end
+
+    local keys = {}
+    for b in pairs(buckets) do keys[#keys + 1] = b end
+    table.sort(keys)
+
+    local items = {}
+    local start = math.max(1, #keys - limit + 1)
+    for i = start, #keys do
+        local b = keys[i]
+        items[#items + 1] = {ts = b, count = buckets[b].count}
+    end
     http_helper.response(request.id, 200, {items = json_array(items)})
 end
 
@@ -1224,6 +1475,43 @@ local function handle_traces_timeseries(request)
             p95_ms = percentile(g.costs, 0.95),
             p99_ms = percentile(g.costs, 0.99),
         }
+    end
+    http_helper.response(request.id, 200, {items = json_array(items)})
+end
+
+-- /api/traces/groups：按时间窗口统计每组的调用数（供时间轴使用）
+local function handle_traces_groups(request)
+    local q = parse_trace_query(request)
+    local query = request.query or {}
+    local window = query["window"]
+    if type(window) == "table" then window = window[#window] end
+    window = tonumber(window) or 10
+    if window < 1 then window = 1 end
+    local limit = tonumber(query["limit"]) or 50
+    if not limit or limit < 1 then limit = 50 end
+
+    local buckets = {}
+    for _, t in ipairs(traces) do
+        if trace_within(t, q.from, q.to, q.service, q.cmd) then
+            local b = math.floor(t.ts / window) * window
+            local g = buckets[b]
+            if not g then
+                g = {ts = b, count = 0}
+                buckets[b] = g
+            end
+            g.count = g.count + 1
+        end
+    end
+
+    local keys = {}
+    for b in pairs(buckets) do keys[#keys + 1] = b end
+    table.sort(keys)
+
+    local items = {}
+    local start = math.max(1, #keys - limit + 1)
+    for i = start, #keys do
+        local b = keys[i]
+        items[#items + 1] = {ts = b, count = buckets[b].count}
     end
     http_helper.response(request.id, 200, {items = json_array(items)})
 end
@@ -1433,6 +1721,7 @@ return function(router, command)
 
     -- API 端点（:pid 而非 :id，避免覆盖 request.id / HTTP fd）
     router:get("/api/profiles", handle_profile_list)
+    router:get("/api/profiles/groups", handle_profile_groups)
     router:get("/api/profiles/:pid", function(params)
         handle_profile_get(params, tonumber(params.pid))
     end)
@@ -1450,6 +1739,7 @@ return function(router, command)
     -- Traces API — 接口耗时数据（内存聚合）
     router:get("/api/traces/stats", handle_traces_stats)
     router:get("/api/traces/timeseries", handle_traces_timeseries)
+    router:get("/api/traces/groups", handle_traces_groups)
     router:get("/api/traces", handle_traces_list)
 
     -- WebSocket /firegraph/ws -- 实时推送（保留兼容）
